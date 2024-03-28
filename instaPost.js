@@ -10,9 +10,9 @@ const Jimp = require('jimp');
 
 const { IgApiClient } = require('instagram-private-api');
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Listening on port ${port}`);
+// });
 
 const ig = new IgApiClient();
 
@@ -36,12 +36,14 @@ const postCarouselWithCaptions = async () => {
     const entries = await fs.readdir(imgDir, { withFileTypes: true });
 
     for (const entry of entries) {
+        console.log("entry", entry);
         if (entry.isDirectory()) {
             const folderPath = path.join(imgDir, entry.name);
             const files = await fs.readdir(folderPath);
             const images = [];
 
             for (const file of files) {
+                console.log("file", file);
                 const filePath = path.join(folderPath, file);
                 const stat = await fs.stat(filePath);
 
@@ -63,9 +65,9 @@ const postCarouselWithCaptions = async () => {
 
             if (images.length > 0) {
                 const captionIndex = entries.indexOf(entry);
-                console.log(images);
+                console.log(images, captions[captionIndex]);
                 await ig.publish.album({
-                    caption: `${captions[captionIndex-1] || 'Default caption'}\n\n${defaultHashTag}`,
+                    caption: `${captions[captionIndex] || 'Default caption'}\n\n${defaultHashTag}`,
                     items: images
                 });
             }
