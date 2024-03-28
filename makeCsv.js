@@ -29,7 +29,7 @@ async function sendRequestToOpenAI(imagePath) {
                 content: [
                     {
                         type: "text",
-                        text: "Write down what a funny woman would say while admiring a handsome man in a photo, in a single five-line sentence with appropriate exclamations. See the example below.\n\nWooooof. Who doesn’t adore a man reading while ALSO toting his best friend around the city? My only worry is that with a bond that strong, I might have some stiff competition for the other spot in his bed. At least I can guarantee a lot less snoring #ButNoLessDrooling #NewMeaningToDoggyStyle  #HDRarchives #hotdudesreading\n\nSpotted: Pedro Pascal looking lost in a book like Joel in the tunnels of Kansas City. That ripped white t-shirt is doing things to me that even a health kit can't fix. I’m over here imagining him protecting me from the Infected, and it has my heart racing faster than if a Clicker was after me. 10/10 sure, yea, I’d let him infect me with his mushroom any day. #WhoreForHisCordyceps #hotdudesreading #thelastofus"
+                        text: "Write down what a funny woman would say while admiring a handsome man in a photo, in a single five-line sentence with appropriate exclamations. See the example below. Use the example as a guide, but don't copy the exclamation point or style too closely.\n\nWooooof. Who doesn’t adore a man reading while ALSO toting his best friend around the city? My only worry is that with a bond that strong, I might have some stiff competition for the other spot in his bed. At least I can guarantee a lot less snoring #ButNoLessDrooling #NewMeaningToDoggyStyle  #HDRarchives #hotdudesreading\n\nSpotted: Pedro Pascal looking lost in a book like Joel in the tunnels of Kansas City. That ripped white t-shirt is doing things to me that even a health kit can't fix. I’m over here imagining him protecting me from the Infected, and it has my heart racing faster than if a Clicker was after me. 10/10 sure, yea, I’d let him infect me with his mushroom any day. #WhoreForHisCordyceps #hotdudesreading #thelastofus"
                     },
                     {
                         type: "image_url",
@@ -45,7 +45,10 @@ async function sendRequestToOpenAI(imagePath) {
 
     try {
         const response = await client.chat.completions.create(payload);
+        console.log("response", response);
         responses.push(response.choices[0].message);
+        console.log("response.choices[0].message", response.choices[0].message);
+        console.log("responses", responses);
     } catch (error) {
         console.error(error);
     }
@@ -64,6 +67,7 @@ async function findFirstImagesInSubdirs(igUsername) {
         const firstImage = files.find(file => /\.(jpg|jpeg|png|gif)$/i.test(file));
         if (firstImage) {
             const imagePath = path.join(imgDir, subdir, firstImage);
+            console.log(imagePath);
             await sendRequestToOpenAI(imagePath);
         }
     }
